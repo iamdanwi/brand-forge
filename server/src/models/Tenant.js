@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const tenantSchema = new mongoose.Schema({
     tenantId: {
@@ -33,4 +33,4 @@ const tenantSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Tenant', tenantSchema);
+export default mongoose.model('Tenant', tenantSchema);

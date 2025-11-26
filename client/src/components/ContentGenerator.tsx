@@ -26,7 +26,7 @@ export default function ContentGenerator({ brandProfile }: ContentGeneratorProps
     setLoading(type);
     try {
       const token = await getToken();
-      const response = await axios.post(`http://localhost:5001/api/brand/${brandProfile._id}/generate`, {
+      const response = await axios.post(`/api/brand/${brandProfile._id}/generate`, {
         contentType: type,
         platform,
         userId

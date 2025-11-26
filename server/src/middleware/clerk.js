@@ -1,7 +1,9 @@
-const { ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
+import { ClerkExpressWithAuth as ClerkExpressWithAuthOriginal } from '@clerk/clerk-sdk-node';
+
+export const ClerkExpressWithAuth = ClerkExpressWithAuthOriginal;
 
 // Middleware to extract tenantId (orgId or userId)
-const setTenant = (req, res, next) => {
+export const setTenant = (req, res, next) => {
     // ClerkExpressWithAuth populates req.auth
     if (!req.auth) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -20,5 +22,3 @@ const setTenant = (req, res, next) => {
 
     next();
 };
-
-module.exports = { ClerkExpressWithAuth, setTenant };

@@ -1,9 +1,10 @@
-const Tenant = require('../models/Tenant');
-const BillingEvent = require('../models/BillingEvent');
+import Tenant from '../models/Tenant.js';
+import BillingEvent from '../models/BillingEvent.js';
+import Stripe from 'stripe';
 
 let stripe;
 if (process.env.STRIPE_SECRET_KEY) {
-    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 } else {
     console.warn('⚠️ STRIPE_SECRET_KEY is missing. Billing features will not work.');
 }
@@ -14,7 +15,7 @@ const PLANS = {
     enterprise: process.env.STRIPE_PRICE_ID_ENTERPRISE,
 };
 
-const createCheckoutSession = async (req, res) => {
+export const createCheckoutSession = async (req, res) => {
     if (!stripe) {
         return res.status(503).json({ message: 'Stripe is not configured on the server.' });
     }
@@ -74,7 +75,7 @@ const createCheckoutSession = async (req, res) => {
     }
 };
 
-const createPortalSession = async (req, res) => {
+export const createPortalSession = async (req, res) => {
     if (!stripe) {
         return res.status(503).json({ message: 'Stripe is not configured on the server.' });
     }
@@ -100,7 +101,7 @@ const createPortalSession = async (req, res) => {
     }
 };
 
-const handleWebhook = async (req, res) => {
+export const handleWebhook = async (req, res) => {
     if (!stripe) {
         return res.status(503).send('Stripe is not configured.');
     }
@@ -177,5 +178,3 @@ const handleWebhook = async (req, res) => {
 
     res.json({ received: true });
 };
-
-module.exports = { createCheckoutSession, createPortalSession, handleWebhook };

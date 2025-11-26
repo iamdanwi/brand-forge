@@ -1,8 +1,8 @@
-const { getUserUsage } = require('../services/userService');
-const BrandProfile = require('../models/BrandProfile');
-const Tenant = require('../models/Tenant');
+import { getUserUsage } from '../services/userService.js';
+import BrandProfile from '../models/BrandProfile.js';
+import Tenant from '../models/Tenant.js';
 
-const checkLimit = (feature) => {
+export const checkLimit = (feature) => {
     return async (req, res, next) => {
         const { tenantId } = req; // From setTenant middleware
 
@@ -56,5 +56,3 @@ const checkLimit = (feature) => {
         }
     };
 };
-
-module.exports = { checkLimit };

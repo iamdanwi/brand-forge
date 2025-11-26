@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import { getKeys, createKey, deleteKey } from '../controllers/keyController.js';
+
 const router = express.Router();
-const { getKeys, createKey, deleteKey } = require('../controllers/keyController');
 
 router.get('/:userId', getKeys);
 router.post('/', createKey);
 router.delete('/:id', deleteKey);
 
-module.exports = router;
+export default router;

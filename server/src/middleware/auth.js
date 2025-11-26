@@ -1,7 +1,7 @@
-const APIKey = require('../models/APIKey');
-const { incrementUsage } = require('../services/userService');
+import APIKey from '../models/APIKey.js';
+import { incrementUsage } from '../services/userService.js';
 
-const validateApiKey = async (req, res, next) => {
+export const validateApiKey = async (req, res, next) => {
     const apiKey = req.header('X-API-Key');
 
     if (!apiKey) {
@@ -34,5 +34,3 @@ const validateApiKey = async (req, res, next) => {
         res.status(500).json({ message: 'Server Error' });
     }
 };
-
-module.exports = { validateApiKey };

@@ -1,12 +1,10 @@
-const BrandProfile = require('../models/BrandProfile');
-const { scrapeWebsite } = require('../services/scraper');
-const { extractColors } = require('../services/colorExtractor');
-const { analyzeBrand, generateContent } = require('../services/ai');
-const { incrementUsage, getUserUsage } = require('../services/userService');
+import BrandProfile from '../models/BrandProfile.js';
+import { analyzeBrand, generateContent } from '../services/ai.js';
+import { incrementUsage, getUserUsage } from '../services/userService.js';
+import puppeteer from 'puppeteer';
+import Tenant from '../models/Tenant.js';
 
-const puppeteer = require('puppeteer');
-
-const analyzeUrl = async (req, res) => {
+export const analyzeUrl = async (req, res) => {
     const { url } = req.body;
     const { tenantId } = req; // From middleware
 
@@ -71,7 +69,7 @@ const analyzeUrl = async (req, res) => {
     }
 };
 
-const getBrandProfile = async (req, res) => {
+export const getBrandProfile = async (req, res) => {
     try {
         const profile = await BrandProfile.findById(req.params.id);
         if (!profile) {
@@ -83,7 +81,7 @@ const getBrandProfile = async (req, res) => {
     }
 };
 
-const getUserBrands = async (req, res) => {
+export const getUserBrands = async (req, res) => {
     const { tenantId } = req; // From middleware
     try {
         const brands = await BrandProfile.find({ tenantId }).sort({ createdAt: -1 });
@@ -93,7 +91,7 @@ const getUserBrands = async (req, res) => {
     }
 };
 
-const generateBrandContent = async (req, res) => {
+export const generateBrandContent = async (req, res) => {
     const { id } = req.params;
     const { contentType, platform } = req.body; // 'captions', 'ideas'
     const { tenantId } = req;
@@ -117,12 +115,11 @@ const generateBrandContent = async (req, res) => {
     }
 };
 
-const getUsage = async (req, res) => {
+export const getUsage = async (req, res) => {
     const { tenantId } = req;
     try {
         const usage = await getUserUsage(tenantId);
         // Also fetch plan to show limits
-        const Tenant = require('../models/Tenant');
         let tenant = await Tenant.findOne({ tenantId });
         if (!tenant) tenant = { plan: 'free' };
 
@@ -131,5 +128,3 @@ const getUsage = async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 };
-
-module.exports = { analyzeUrl, getBrandProfile, getUserBrands, generateBrandContent, getUsage };

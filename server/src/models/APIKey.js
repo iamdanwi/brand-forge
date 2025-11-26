@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const apiKeySchema = new mongoose.Schema({
     userId: {
@@ -24,4 +24,4 @@ const apiKeySchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('APIKey', apiKeySchema);
+export default mongoose.model('APIKey', apiKeySchema);

@@ -1,7 +1,8 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import routes from './routes/index.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,12 +21,6 @@ app.use((req, res, next) => {
 connectDB();
 
 // Routes
-const brandRoutes = require('./routes/brandRoutes');
-const apiRoutes = require('./routes/apiRoutes');
-const keyRoutes = require('./routes/keyRoutes');
-const billingRoutes = require('./routes/billingRoutes');
-const imageRoutes = require('./routes/imageRoutes');
-const campaignRoutes = require('./routes/campaignRoutes');
 
 // Stripe webhook needs raw body, so we should mount it BEFORE express.json() if possible, 
 // OR use the express.raw middleware in the route definition (which we did).
@@ -37,12 +32,7 @@ const campaignRoutes = require('./routes/campaignRoutes');
 // If express.json() consumes the stream, the raw middleware in the route won't work.
 // We need to modify how express.json is used.
 
-app.use('/api/brand', brandRoutes);
-app.use('/api/v1', apiRoutes);
-app.use('/api/keys', keyRoutes);
-app.use('/api/billing', billingRoutes);
-app.use('/api/image', imageRoutes);
-app.use('/api/campaign', campaignRoutes);
+app.use('/api', routes);
 
 app.get('/', (req, res) => {
     res.send('BrandForge API is running');

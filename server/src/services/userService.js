@@ -1,7 +1,7 @@
-const User = require('../models/User');
-const UsageTracking = require('../models/UsageTracking');
+import User from '../models/User.js';
+import UsageTracking from '../models/UsageTracking.js';
 
-const getOrCreateUser = async (clerkId, email) => {
+export const getOrCreateUser = async (clerkId, email) => {
     try {
         let user = await User.findOne({ clerkId });
         if (!user) {
@@ -18,7 +18,7 @@ const getOrCreateUser = async (clerkId, email) => {
     }
 };
 
-const getUserUsage = async (tenantId) => {
+export const getUserUsage = async (tenantId) => {
     const date = new Date();
     const month = date.getMonth() + 1; // 1-12
     const year = date.getFullYear();
@@ -42,7 +42,7 @@ const getUserUsage = async (tenantId) => {
     }
 };
 
-const incrementUsage = async (tenantId, type) => {
+export const incrementUsage = async (tenantId, type) => {
     const date = new Date();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
@@ -62,5 +62,3 @@ const incrementUsage = async (tenantId, type) => {
         console.error('Error incrementing usage:', error);
     }
 };
-
-module.exports = { getOrCreateUser, getUserUsage, incrementUsage };

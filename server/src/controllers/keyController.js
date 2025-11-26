@@ -1,7 +1,7 @@
-const APIKey = require('../models/APIKey');
-const crypto = require('crypto');
+import APIKey from '../models/APIKey.js';
+import crypto from 'crypto';
 
-const getKeys = async (req, res) => {
+export const getKeys = async (req, res) => {
     try {
         const keys = await APIKey.find({ userId: req.params.userId }).sort({ createdAt: -1 });
         res.json(keys);
@@ -10,7 +10,7 @@ const getKeys = async (req, res) => {
     }
 };
 
-const createKey = async (req, res) => {
+export const createKey = async (req, res) => {
     const { userId, name } = req.body;
     try {
         // Generate a random key
@@ -27,7 +27,7 @@ const createKey = async (req, res) => {
     }
 };
 
-const deleteKey = async (req, res) => {
+export const deleteKey = async (req, res) => {
     try {
         await APIKey.findByIdAndDelete(req.params.id);
         res.json({ message: 'Key deleted' });
@@ -35,5 +35,3 @@ const deleteKey = async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 };
-
-module.exports = { getKeys, createKey, deleteKey };

@@ -29,7 +29,7 @@ export default function ApiKeyManager() {
 
   const fetchKeys = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/api/keys/${userId}`);
+      const response = await axios.get(`/api/keys/${userId}`);
       setKeys(response.data);
     } catch (error) {
       console.error('Error fetching keys:', error);
@@ -42,7 +42,7 @@ export default function ApiKeyManager() {
     if (!newKeyName.trim()) return;
     setCreating(true);
     try {
-      const response = await axios.post('http://localhost:5001/api/keys', {
+      const response = await axios.post('/api/keys', {
         userId,
         name: newKeyName,
       });
@@ -57,7 +57,7 @@ export default function ApiKeyManager() {
 
   const deleteKey = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:5001/api/keys/${id}`);
+      await axios.delete(`/api/keys/${id}`);
       setKeys(keys.filter((k) => k._id !== id));
     } catch (error) {
       console.error('Error deleting key:', error);

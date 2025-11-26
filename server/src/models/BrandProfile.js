@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const BrandProfileSchema = new mongoose.Schema({
     url: {
@@ -42,4 +42,4 @@ const BrandProfileSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('BrandProfile', BrandProfileSchema);
+export default mongoose.model('BrandProfile', BrandProfileSchema);

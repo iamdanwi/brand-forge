@@ -30,10 +30,10 @@ export default function Dashboard() {
       try {
         const token = await getToken();
         const [brandsRes, usageRes] = await Promise.all([
-            axios.get(`http://localhost:5001/api/brand/user/${userId}`, {
+            axios.get(`/api/brand/user/${userId}`, {
                 headers: { Authorization: `Bearer ${token}` }
             }),
-            axios.get('http://localhost:5001/api/brand/usage', {
+            axios.get('/api/brand/usage', {
                 headers: { Authorization: `Bearer ${token}` }
             })
         ]);

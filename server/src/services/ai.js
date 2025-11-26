@@ -1,8 +1,8 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const analyzeBrand = async (url, textContent, screenshotBase64) => {
+export const analyzeBrand = async (url, textContent, screenshotBase64) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `
@@ -56,7 +56,7 @@ const analyzeBrand = async (url, textContent, screenshotBase64) => {
     }
 };
 
-const generateContent = async (brandProfile, contentType, platform = 'instagram') => {
+export const generateContent = async (brandProfile, contentType, platform = 'instagram') => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     let prompt = '';
@@ -99,7 +99,7 @@ const generateContent = async (brandProfile, contentType, platform = 'instagram'
     }
 };
 
-const chatWithImage = async (imageBase64, prompt) => {
+export const chatWithImage = async (imageBase64, prompt) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     try {
@@ -118,7 +118,7 @@ const chatWithImage = async (imageBase64, prompt) => {
     }
 };
 
-const generateImage = async (prompt) => {
+export const generateImage = async (prompt) => {
     // Placeholder for Image Generation
     // In a real app, this would call OpenAI DALL-E or Stable Diffusion API
     // For now, we return a high-quality placeholder image based on keywords
@@ -128,11 +128,12 @@ const generateImage = async (prompt) => {
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Return a generated image from Pollinations AI (free, no key required)
-    const encodedPrompt = encodeURIComponent(prompt);
-    return `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux-pro`;
+    const enhancedPrompt = `${prompt}, high quality, professional, 4k, sharp focus`;
+    const encodedPrompt = encodeURIComponent(enhancedPrompt);
+    return `https://image.pollinations.ai/prompt/${encodedPrompt}?model=flux-pro&width=1024&height=1024&seed=${Math.floor(Math.random() * 1000)}`;
 };
 
-const generateCampaignStrategy = async (brandProfile, targetAudience, goal) => {
+export const generateCampaignStrategy = async (brandProfile, targetAudience, goal) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const prompt = `
@@ -179,7 +180,7 @@ const generateCampaignStrategy = async (brandProfile, targetAudience, goal) => {
     }
 };
 
-const processMultimodalChat = async (prompt, imageBase64, history = []) => {
+export const processMultimodalChat = async (prompt, imageBase64, history = []) => {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
     const systemPrompt = `
@@ -190,6 +191,13 @@ const processMultimodalChat = async (prompt, imageBase64, history = []) => {
     1. If the user wants to GENERATE a new image (e.g., "create a logo", "generate a banner"), reply with: <GENERATE_IMAGE>detailed description of the image</GENERATE_IMAGE>
     2. If the user wants to EDIT an uploaded image (e.g., "make it blue", "add a dog"), reply with: <GENERATE_IMAGE>detailed description of the NEW image based on the uploaded image and the user's change</GENERATE_IMAGE>
     3. If the user asks a QUESTION or wants to CHAT (e.g., "what is this?", "suggest a slogan"), reply normally with text.
+    
+    IMAGE GENERATION GUIDELINES:
+    - The description inside <GENERATE_IMAGE> must be a highly detailed visual prompt for an image generation model (like Flux or Midjourney).
+    - Focus on lighting, style, composition, texture, and mood.
+    - DO NOT include long paragraphs of text to be rendered inside the image. Image models struggle with long text.
+    - If text is required (e.g. for a logo or headline), keep it VERY short (1-3 words) and enclose it in quotes.
+    - Use keywords like: "professional photography", "studio lighting", "high resolution", "4k", "minimalist", "clean design".
     
     Do not output markdown code blocks for the tag. Just the tag.
     `;
@@ -237,5 +245,3 @@ const processMultimodalChat = async (prompt, imageBase64, history = []) => {
         throw new Error('Failed to process chat');
     }
 };
-
-module.exports = { analyzeBrand, generateContent, chatWithImage, generateImage, generateCampaignStrategy, processMultimodalChat };

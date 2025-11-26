@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import { analyzeUrl, getBrandProfile, getUserBrands, generateBrandContent, getUsage } from '../controllers/brandController.js';
+import { checkLimit } from '../middleware/subscription.js';
+import { ClerkExpressWithAuth, setTenant } from '../middleware/clerk.js';
+
 const router = express.Router();
-const { analyzeUrl, getBrandProfile, getUserBrands, generateBrandContent, getUsage } = require('../controllers/brandController');
-const { checkLimit } = require('../middleware/subscription');
-const { ClerkExpressWithAuth, setTenant } = require('../middleware/clerk');
 
 // Apply Clerk middleware to all routes
 router.use(ClerkExpressWithAuth());
@@ -14,4 +15,4 @@ router.get('/user/:userId', getUserBrands); // We might want to change this to j
 router.get('/:id', getBrandProfile);
 router.post('/:id/generate', checkLimit('content'), generateBrandContent);
 
-module.exports = router;
+export default router;

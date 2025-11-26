@@ -29,7 +29,7 @@ export default function BrandAnalyzer() {
     setLoading(true);
     try {
       const token = await getToken();
-      const response = await axios.post('http://localhost:5001/api/brand/analyze', { 
+      const response = await axios.post('/api/brand/analyze', { 
         url,
         userId // We still send userId for now, but backend checks token
       }, {

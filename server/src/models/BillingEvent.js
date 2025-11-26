@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const billingEventSchema = new mongoose.Schema({
     stripeEventId: {
@@ -19,4 +19,4 @@ const billingEventSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('BillingEvent', billingEventSchema);
+export default mongoose.model('BillingEvent', billingEventSchema);

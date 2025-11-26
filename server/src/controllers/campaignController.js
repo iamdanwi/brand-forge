@@ -1,8 +1,8 @@
-const BrandProfile = require('../models/BrandProfile');
-const { generateCampaignStrategy } = require('../services/ai');
-const { incrementUsage } = require('../services/userService');
+import BrandProfile from '../models/BrandProfile.js';
+import { generateCampaignStrategy } from '../services/ai.js';
+import { incrementUsage } from '../services/userService.js';
 
-const createCampaign = async (req, res) => {
+export const createCampaign = async (req, res) => {
     const { brandId, targetAudience, goal } = req.body;
     const { tenantId } = req;
 
@@ -36,5 +36,3 @@ const createCampaign = async (req, res) => {
         res.status(500).json({ message: 'Failed to create campaign' });
     }
 };
-
-module.exports = { createCampaign };

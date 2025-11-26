@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const usageTrackingSchema = new mongoose.Schema({
     userId: { // Keep for reference
@@ -36,4 +36,4 @@ const usageTrackingSchema = new mongoose.Schema({
 // Compound index to ensure unique tracking per tenant per month
 usageTrackingSchema.index({ tenantId: 1, month: 1, year: 1 }, { unique: true });
 
-module.exports = mongoose.model('UsageTracking', usageTrackingSchema);
+export default mongoose.model('UsageTracking', usageTrackingSchema);

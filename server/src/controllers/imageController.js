@@ -1,9 +1,7 @@
-const { chatWithImage, generateImage, processMultimodalChat } = require('../services/ai');
-const { incrementUsage } = require('../services/userService');
+import { chatWithImage, generateImage, processMultimodalChat } from '../services/ai.js';
+import { incrementUsage } from '../services/userService.js';
 
-// ... existing functions ...
-
-const handleUnifiedChat = async (req, res) => {
+export const handleUnifiedChat = async (req, res) => {
     const { prompt, image, history } = req.body;
     const { tenantId } = req;
 
@@ -36,9 +34,7 @@ const handleUnifiedChat = async (req, res) => {
     }
 };
 
-
-
-const generateNewImage = async (req, res) => {
+export const generateNewImage = async (req, res) => {
     const { prompt } = req.body;
     const { tenantId } = req;
 
@@ -59,7 +55,7 @@ const generateNewImage = async (req, res) => {
     }
 };
 
-const chatAboutImage = async (req, res) => {
+export const chatAboutImage = async (req, res) => {
     const { image, prompt } = req.body; // image is base64 string
     const { tenantId } = req;
 
@@ -82,5 +78,3 @@ const chatAboutImage = async (req, res) => {
         res.status(500).json({ message: 'Failed to process image chat' });
     }
 };
-
-module.exports = { generateNewImage, chatAboutImage, handleUnifiedChat };
